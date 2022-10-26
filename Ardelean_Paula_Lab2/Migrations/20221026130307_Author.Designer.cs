@@ -4,6 +4,7 @@ using Ardelean_Paula_Lab2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ardelean_Paula_Lab2.Migrations
 {
     [DbContext(typeof(Ardelean_Paula_Lab2Context))]
-    partial class Ardelean_Paula_Lab2ContextModelSnapshot : ModelSnapshot
+    [Migration("20221026130307_Author")]
+    partial class Author
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,6 +52,10 @@ namespace Ardelean_Paula_Lab2.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("AuthorID")
                         .HasColumnType("int");
@@ -95,15 +101,13 @@ namespace Ardelean_Paula_Lab2.Migrations
 
             modelBuilder.Entity("Ardelean_Paula_Lab2.Models.Book", b =>
                 {
-                    b.HasOne("Ardelean_Paula_Lab2.Models.Author", "Author")
+                    b.HasOne("Ardelean_Paula_Lab2.Models.Author", null)
                         .WithMany("Books")
                         .HasForeignKey("AuthorID");
 
                     b.HasOne("Ardelean_Paula_Lab2.Models.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherID");
-
-                    b.Navigation("Author");
 
                     b.Navigation("Publisher");
                 });
