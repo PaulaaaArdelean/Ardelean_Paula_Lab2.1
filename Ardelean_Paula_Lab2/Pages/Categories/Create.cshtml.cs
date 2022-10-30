@@ -8,10 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Ardelean_Paula_Lab2.Data;
 using Ardelean_Paula_Lab2.Models;
 
-namespace Ardelean_Paula_Lab2.Pages.Books
+namespace Ardelean_Paula_Lab2.Pages.Categories
 {
-    public class CreateModel : BookCategoriesPageModel
-
+    public class CreateModel : PageModel
     {
         private readonly Ardelean_Paula_Lab2.Data.Ardelean_Paula_Lab2Context _context;
 
@@ -22,21 +21,11 @@ namespace Ardelean_Paula_Lab2.Pages.Books
 
         public IActionResult OnGet()
         {
-            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
-"PublisherName");
-
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID",
-"FirstName");
-
-            var book = new Book();
-            book.BookCategories = new List<BookCategory>();
-            PopulateAssignedCategoryData(_context, book);
-
             return Page();
         }
 
         [BindProperty]
-        public Book Book { get; set; }
+        public Category Category { get; set; }
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -47,7 +36,7 @@ namespace Ardelean_Paula_Lab2.Pages.Books
                 return Page();
             }
 
-            _context.Book.Add(Book);
+            _context.Category.Add(Category);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
