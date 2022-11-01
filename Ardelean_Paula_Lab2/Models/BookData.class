@@ -1,0 +1,6 @@
+﻿namespace Ardelean_Paula_Lab2.Models
+{
+    public class BookData
+    {
+    }
+}
