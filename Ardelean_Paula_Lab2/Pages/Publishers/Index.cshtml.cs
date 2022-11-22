@@ -8,14 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using Ardelean_Paula_Lab2.Data;
 using Ardelean_Paula_Lab2.Models;
 using Ardelean_Paula_Lab2.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Ardelean_Paula_Lab2.Pages.Publishers
 {
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
-        private readonly Ardelean_Paula_Lab2.Data.Ardelean_Paula_Lab2Context _context;
+        private readonly Ardelean_Paula_Lab2Context _context;
 
-        public IndexModel(Ardelean_Paula_Lab2.Data.Ardelean_Paula_Lab2Context context)
+        public IndexModel(Ardelean_Paula_Lab2Context context)
         {
             _context = context;
         }

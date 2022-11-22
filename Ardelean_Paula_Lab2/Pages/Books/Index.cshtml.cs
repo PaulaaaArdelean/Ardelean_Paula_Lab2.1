@@ -12,14 +12,14 @@ namespace Ardelean_Paula_Lab2.Pages.Books
 {
     public class IndexModel : PageModel
     {
-        private readonly Ardelean_Paula_Lab2.Data.Ardelean_Paula_Lab2Context _context;
+        private readonly Ardelean_Paula_Lab2Context _context;
 
-        public IndexModel(Ardelean_Paula_Lab2.Data.Ardelean_Paula_Lab2Context context)
+        public IndexModel(Ardelean_Paula_Lab2Context context)
         {
             _context = context;
         }
 
-        public IList<Book> Book { get; set; }
+        public IList<Book> Book { get; set; } = default;
         public BookData BookD { get; set; }
         public int BookID { get; set; }
         public int CategoryID { get; set; }
@@ -28,35 +28,33 @@ namespace Ardelean_Paula_Lab2.Pages.Books
         public string CurrentFilter { get; set; }
 
 
-        public async Task OnGetAsync(int? id, int? categoryID, string sortOrder, string
-searchString)
+        public async Task OnGetAsync(int? id, int? categoryID, string sortOrder, string searchString)
         {
-            BookD = new BookData();
+            
+
 
             TitleSort = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
             AuthorSort = String.IsNullOrEmpty(sortOrder) ? "author_desc" : "";
 
             CurrentFilter = searchString;
 
-
-            BookD.Books = await _context.Book
-            .Include(b => b.Publisher)
-              .Include(b => b.Author)
-            .Include(b => b.BookCategories)
-            .ThenInclude(b => b.Category)
-            .AsNoTracking()
-            .OrderBy(b => b.Title)
-            .ToListAsync();
-
-
-
-            if (!String.IsNullOrEmpty(searchString))
+            BookD = new BookData();
+            
             {
-                BookD.Books = BookD.Books.Where(s => s.Author.FirstName.Contains(searchString)
+                BookD.Books = await _context.Book
+                     .Include(b => b.Author)
+                    .Include(b => b.Publisher)
+                    .Include(b => b.BookCategories)
+                    .ThenInclude(b => b.Category)
+                    .AsNoTracking()
+                    .OrderBy(b => b.Title)
+                    .ToListAsync();
 
-               || s.Author.LastName.Contains(searchString)
-               || s.Title.Contains(searchString));
             }
+
+
+
+           
 
 
 
@@ -77,6 +75,14 @@ searchString)
                     BookD.Books = BookD.Books.OrderByDescending(s =>
                    s.Author.FullName);
                     break;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                BookD.Books = BookD.Books.Where(s => s.Author.FirstName.Contains(searchString)
+
+               || s.Author.LastName.Contains(searchString)
+               || s.Title.Contains(searchString));
             }
         }
     }
